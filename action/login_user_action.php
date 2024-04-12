@@ -18,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
+        
 
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
