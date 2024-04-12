@@ -1,0 +1,82 @@
+<?php
+// Database connection parameters
+$host = 'localhost'; // Change this to your MySQL server host
+$dbname = 'your_database_name'; // Change this to your database name
+$username = 'your_username'; // Change this to your database username
+$password = 'your_password'; // Change this to your database password
+
+// Attempt to connect to the database
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Connected successfully";
+} catch (PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
+}
+
+// Example of inserting data into the Services table
+try {
+    $stmt = $pdo->prepare("INSERT INTO Services (service_name, description, price) VALUES (:service_name, :description, :price)");
+    $stmt->bindParam(':service_name', $service_name);
+    $stmt->bindParam(':description', $description);
+    $stmt->bindParam(':price', $price);
+
+    // Example data
+    $service_name = "Oil Change";
+    $description = "Regular oil change service for maintaining engine health.";
+    $price = 50.00;
+
+    $stmt->execute();
+    echo "New service record created successfully";
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+// Example of reading data from the Services table
+try {
+    $stmt = $pdo->prepare("SELECT * FROM Services");
+    $stmt->execute();
+    $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($services as $service) {
+        echo "Service Name: " . $service['service_name'] . "<br>";
+        echo "Description: " . $service['description'] . "<br>";
+        echo "Price: $" . $service['price'] . "<br>";
+        echo "<hr>";
+    }
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+// Example of updating data in the Services table
+try {
+    $stmt = $pdo->prepare("UPDATE Services SET price = :price WHERE service_id = :service_id");
+    $stmt->bindParam(':price', $new_price);
+    $stmt->bindParam(':service_id', $service_id);
+
+    // Example data
+    $new_price = 60.00;
+    $service_id = 1; // Update service with ID 1
+
+    $stmt->execute();
+    echo "Service price updated successfully";
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+// Example of deleting data from the Services table
+try {
+    $stmt = $pdo->prepare("DELETE FROM Services WHERE service_id = :service_id");
+    $stmt->bindParam(':service_id', $service_id);
+
+    // Example data
+    $service_id = 1; // Delete service with ID 1
+
+    $stmt->execute();
+    echo "Service deleted successfully";
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+// Close the database connection
+$pdo = null;
+?>
