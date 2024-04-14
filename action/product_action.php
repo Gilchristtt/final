@@ -1,89 +1,43 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 // Include database connection file
-include_once "./settings/connection.php";
+include_once "../settings/connection.php";
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
     $productName = $_POST['productName'];
-    $productDescription = $_POST['productDescription'];
     $productPrice = $_POST['productPrice'];
     
-    // Validate form data (you can add more validation if needed)
-    if (empty($productName) || empty($productDescription) || empty($productPrice)) {
-        echo "All fields are required";
+    // Validate form data
+    if (empty($productName) || empty($productPrice)) {
+        echo "Both name and price fields are required";
         exit();
     }
     
-    // Handle file upload
-    $targetDirectory = "uploads/"; // Adjust the directory path accordingly
-    $targetFile = $targetDirectory . basename($_FILES["productImage"]["name"]);
-    $uploadOk = 1;
-    $imageFileType = strtolower(pathinfo($targetFile,PATHINFO_EXTENSION));
-    
-    // Check if image file is a actual image or fake image
-    if(isset($_POST["submit"])) {
-        $check = getimagesize($_FILES["productImage"]["tmp_name"]);
-        if($check !== false) {
-            $uploadOk = 1;
-        } else {
-            echo "File is not an image.";
-            $uploadOk = 0;
-        }
+    // Set a static image path (ensure this file exists on your server)
+    $staticImagePath = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.shell.com.gh%2Fmotorists%2Foils-lubricants%2Fhelix-for-cars.html&psig=AOvVaw0Xm2lGIT1gLheUTbBtF0tx&ust=1713209370082000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCMCFyrK4woUDFQAAAAAdAAAAABAE";
+
+    // Insert product data into the database
+    $sql = "INSERT INTO Products (name, price, image_url) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    if ($stmt === false) {
+        echo "Error in preparing SQL statement: " . $conn->error;
+        exit();
     }
     
-    // Check if file already exists
-    if (file_exists($targetFile)) {
-        echo "Sorry, file already exists.";
-        $uploadOk = 0;
-    }
-    
-    // Check file size
-    if ($_FILES["productImage"]["size"] > 500000) {
-        echo "Sorry, your file is too large.";
-        $uploadOk = 0;
-    }
-    
-    // Allow certain file formats
-    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-    && $imageFileType != "gif" ) {
-        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-        $uploadOk = 0;
-    }
-    
-    // Check if $uploadOk is set to 0 by an error
-    if ($uploadOk == 0) {
-        echo "Sorry, your file was not uploaded.";
-    // if everything is ok, try to upload file
+    $stmt->bind_param("sds", $productName, $productPrice, $staticImagePath);
+    if ($stmt->execute()) {
+        header("Location: ../admin.php?msg=Product added sucessfully"); // Redirect to admin page
+        exit();
     } else {
-        if (move_uploaded_file($_FILES["productImage"]["tmp_name"], $targetFile)) {
-            // Insert product data into the database
-            $sql = "INSERT INTO Products (name, description, price, image_url) VALUES (?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            
-            // Check if the prepare statement succeeded
-            if ($stmt === false) {
-                echo "Error in preparing SQL statement: " . $conn->error;
-                exit();
-            }
-            
-            // Bind parameters
-            $stmt->bind_param("ssds", $productName, $productDescription, $productPrice, $targetFile);
-            
-            // Execute the statement
-            if ($stmt->execute()) {
-                header("Location: admin.php"); // Redirect to admin page
-                exit();
-            } else {
-                echo "Error executing SQL statement: " . $stmt->error;
-            }
-        } else {
-            echo "Sorry, there was an error uploading your file.";
-        }
+        echo "Error executing SQL statement: " . $stmt->error;
     }
 } else {
     // If the form wasn't submitted properly, redirect back to the admin page
-    header("Location: admin.php");
+    header("Location: ../admin.php?msg=Error");
     exit();
 }
-?>
+

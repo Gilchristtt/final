@@ -3,7 +3,9 @@ include './settings/connection.php';
 include './functions/get_services.php';
 include './settings/core.php';
 checkLogin();
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 ?>
 <!DOCTYPE html>
 <html lang="en">

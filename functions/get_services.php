@@ -1,6 +1,9 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 // Include your database connection file
-include_once "../settings/connection.php"; // Adjust the path as needed
+include_once "./settings/connection.php"; // Adjust the path as needed
 
 // Function to fetch and display services
 function displayServices($conn) {

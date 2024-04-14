@@ -2,6 +2,7 @@
 include './settings/core.php';
 include './settings/connection.php';
 include './functions/get_services.php';
+include './functions/get_products.php';
 checkLogin();
 if($_SESSION['role_id']!=3){
 	header('Location: admin.php');
@@ -125,25 +126,28 @@ if($_SESSION['role_id']!=3){
         <section>
             <div style="display: flex; justify-content: center;">
                 <section class="products-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; grid-row-gap: 40px;">
-                <h1>Product Gallery</h1>
+             
 
-<div class="product">
+<!-- <div class="product">
     <img src="https://via.placeholder.com/200x150" alt="Product 1">
     <p>Product 1</p>
     <p class="price">$19.99</p>
-</div>
+</div> -->
+<?php
 
-<div class="product">
+echo getProducts();
+?>
+<!-- <div class="product">
     <img src="https://via.placeholder.com/200x150" alt="Product 2">
     <p>Product 2</p>
     <p class="price">$29.99</p>
-</div>
+</div> -->
 
-<div class="product">
+<!-- <div class="product">
     <img src="https://via.placeholder.com/200x150" alt="Product 3">
     <p>Product 3</p>
     <p class="price">$39.99</p>
-</div>
+</div> -->
                 </section>
             </div>
         </section>

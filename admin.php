@@ -7,6 +7,9 @@ if($_SESSION['role_id']!=1){
 	header('Location: index.php');
 	exit;
 }
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,8 +19,11 @@ if($_SESSION['role_id']!=1){
   <title>Fita Admin</title>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <!-- Custom CSS -->
-  <style>
+<!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css">
+
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.all.min.js"></script>  <style>
     body {
       background-color:#343a40; /* Light grey background */
       color:orange; /* Dark grey font color */
@@ -37,9 +43,9 @@ if($_SESSION['role_id']!=1){
       border-color: #495057; /* Darker grey border hover color */
     }
     .card {
-      margin-bottom: 20px; /* Add space between cards */
-      border: none; /* Remove card border */
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add subtle box-shadow */
+      margin-bottom: 20px;
+      border: none;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
     }
     .card-header {
       background-color: #f8f9fa; /* Light grey card header */
@@ -118,7 +124,7 @@ if($_SESSION['role_id']!=1){
       </div>
       <div class="modal-body">
         <!-- Form to add service -->
-        <form action="action/service_action.php" id="addServiceForm>
+        <form action="action/service_action.php" id="addServiceForm"  method='post'>
           <div class="form-group">
             <label for="serviceName">Service Name</label>
             <input type="text" class="form-control" id="serviceName" name="serviceName">
@@ -127,6 +133,11 @@ if($_SESSION['role_id']!=1){
             <label for="serviceDescription">Description</label>
             <textarea class="form-control" id="serviceDescription" name="serviceDescription"></textarea>
           </div>
+          <div class="form-group">
+    <label for="price">Price</label>
+    <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" placeholder="Enter price">
+</div>
+
           <button type="submit"  class="btn btn-primary" id="addServiceBtn">Save changes</button>
 
         </form>
@@ -184,28 +195,14 @@ if($_SESSION['role_id']!=1){
 
       
       <!-- Tips -->
-      <div class="col-lg-4">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="card-title">Tips on Vehicle Maintenance</h5>
-          </div>
-          <div class="card-body">
-            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addTipModal">Add Tip</button>
-            <table class="table">
+      
               <!-- Table content for tips -->
             </table>
           </div>
         </div>
       </div>
       <!-- Testimonials -->
-      <div class="col-lg-4">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="card-title">Customer Testimonials</h5>
-          </div>
-          <div class="card-body">
-            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addTestimonialModal">Add Testimonial</button>
-            <table class="table">
+      
               <!-- Table content for testimonials -->
             </table>
           </div>
@@ -222,7 +219,6 @@ if($_SESSION['role_id']!=1){
         <thead>
           <tr>
             <th>Product Name</th>
-            <th>Description</th>
             <th>Price</th>
             <th>Actions</th>
           </tr>
@@ -250,28 +246,27 @@ if($_SESSION['role_id']!=1){
       </div>
       <div class="modal-body">
         <!-- Form to add product -->
-        <form id="addProductForm" enctype="multipart/form-data" action=product_action.php> <!-- enctype for file upload -->
+        <form id="addProductForm" enctype="multipart/form-data" action=./action/product_action.php method='post'>
           <div class="form-group">
             <label for="productName">Product Name</label>
             <input type="text" class="form-control" id="productName" name="productName">
           </div>
-          <div class="form-group">
-            <label for="productDescription">Description</label>
-            <textarea class="form-control" id="productDescription" name="productDescription"></textarea>
-          </div>
+
           <div class="form-group">
             <label for="productPrice">Price</label>
             <input type="number" class="form-control" id="productPrice" name="productPrice">
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="productImage">Image</label>
             <input type="file" class="form-control-file" id="productImage" name="productImage">
-          </div>
+          </div> -->
+          <button type="submit" class="btn btn-primary" id="addProductBtn">Save changes</button>
+
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="addProductBtn">Save changes</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
       </div>
     </div>
   </div>
@@ -332,6 +327,14 @@ if($_SESSION['role_id']!=1){
       });
     });
   </script>
-
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('msg');
+            if (message) {
+                Swal.fire("Notice", message, "info");
+            }
+        });
+    </script>
 </body>
 </html>
