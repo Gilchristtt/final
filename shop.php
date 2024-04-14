@@ -37,6 +37,29 @@ if($_SESSION['role_id']!=3){
       nav {
         border-bottom: 1px solid black;
       }
+
+
+      body {
+            font-family: Arial, sans-serif;
+        }
+        .product {
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 10px;
+            display: inline-block;
+            text-align: center;
+            width: 200px;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .price {
+            color: green;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -102,9 +125,25 @@ if($_SESSION['role_id']!=3){
         <section>
             <div style="display: flex; justify-content: center;">
                 <section class="products-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; grid-row-gap: 40px;">
-                    <?php
-                    include ('../functions/product.php');
-                    ?>
+                <h1>Product Gallery</h1>
+
+<div class="product">
+    <img src="https://via.placeholder.com/200x150" alt="Product 1">
+    <p>Product 1</p>
+    <p class="price">$19.99</p>
+</div>
+
+<div class="product">
+    <img src="https://via.placeholder.com/200x150" alt="Product 2">
+    <p>Product 2</p>
+    <p class="price">$29.99</p>
+</div>
+
+<div class="product">
+    <img src="https://via.placeholder.com/200x150" alt="Product 3">
+    <p>Product 3</p>
+    <p class="price">$39.99</p>
+</div>
                 </section>
             </div>
         </section>
@@ -170,7 +209,7 @@ if($_SESSION['role_id']!=3){
           <div class="col-md-12 text-center">
 
             <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> 
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved <i class="fa fa-heart" aria-hidden="true"></i> 
   <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
           </div>
         </div>
