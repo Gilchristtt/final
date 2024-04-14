@@ -2,7 +2,7 @@
 include './settings/core.php';
 include './settings/connection.php';
 include './functions/get_services.php';
-checkLogin();
+
 if($_SESSION['role_id']!=2){
 	header('Location: admin.php');
 	exit;
