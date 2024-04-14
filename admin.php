@@ -118,7 +118,7 @@ if($_SESSION['role_id']!=1){
       </div>
       <div class="modal-body">
         <!-- Form to add service -->
-        <form action="action/service_action.php" id="addServiceForm">
+        <form action="action/service_action.php" id="addServiceForm>
           <div class="form-group">
             <label for="serviceName">Service Name</label>
             <input type="text" class="form-control" id="serviceName" name="serviceName">
@@ -127,15 +127,12 @@ if($_SESSION['role_id']!=1){
             <label for="serviceDescription">Description</label>
             <textarea class="form-control" id="serviceDescription" name="serviceDescription"></textarea>
           </div>
-          <div class="form-group">
-            <label for="servicePrice">Price</label>
-            <input type="number" class="form-control" id="servicePrice" name="servicePrice">
-          </div>
+          <button type="submit"  class="btn btn-primary" id="addServiceBtn">Save changes</button>
+
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" id="addServiceBtn">Save changes</button>
       </div>
     </div>
   </div>
